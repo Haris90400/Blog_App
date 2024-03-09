@@ -1,9 +1,14 @@
+import 'package:blog_app/core/secrets/app_secret.dart';
 import 'package:blog_app/core/theme/theme.dart';
 import 'package:blog_app/features/auth/presentation/pages/login_page.dart';
-import 'package:blog_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
+  final supabase =
+      await Supabase.initialize(url: supabaseUrl!, anonKey: supabaseApiKey!);
   runApp(const MyApp());
 }
 
