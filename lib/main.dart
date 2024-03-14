@@ -8,8 +8,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  final supabase =
-      await Supabase.initialize(url: supabaseUrl!, anonKey: supabaseApiKey!);
+  final supabase = await Supabase.initialize(
+    url: supabaseUrl!,
+    anonKey: supabaseApiKey!,
+  );
   runApp(const MyApp());
 }
 
