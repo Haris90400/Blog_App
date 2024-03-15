@@ -23,7 +23,9 @@ void main() async {
         create: (_) => AuthBloc(
           userSignUp: UserSignUp(
             authRepository: AuthRepositoryImpl(
-              AuthRemoteDataSourceImpl(supabaseClient: supabase.client),
+              AuthRemoteDataSourceImpl(
+                supabaseClient: supabase.client,
+              ),
             ),
           ),
         ),
