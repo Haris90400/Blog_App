@@ -1,3 +1,5 @@
+import 'package:blog_app/core/common/utils/snackbar.dart';
+import 'package:blog_app/core/common/widgets/loader.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/features/auth/presentation/pages/login_page.dart';
@@ -34,87 +36,105 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Form(
-          key: formkey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Sign Up.',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              AuthField(
-                controller: nameController,
-                hintText: 'Name',
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              AuthField(
-                hintText: 'Email',
-                controller: emailController,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              AuthField(
-                hintText: 'Password',
-                controller: passwordController,
-                isObsure: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              AuthGradientButton(
-                onPressed: () {
-                  if (formkey.currentState!.validate()) {
-                    context.read<AuthBloc>().add(
-                          AuthSignUp(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                            name: nameController.text.trim(),
-                          ),
-                        );
-                  }
-                },
-                text: 'Sign Up',
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthFailure) {
+              print(state.error);
+              showSnackBar(
+                context,
+                state.error,
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is AuthLoading) {
+              return const Loader();
+            }
+            return Form(
+              key: formkey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Sign Up.',
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
                     ),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: "Already have an account?",
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: [
-                      TextSpan(
-                        text: ' Sign In',
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  AuthField(
+                    controller: nameController,
+                    hintText: 'Name',
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  AuthField(
+                    hintText: 'Email',
+                    controller: emailController,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  AuthField(
+                    hintText: 'Password',
+                    controller: passwordController,
+                    isObsure: true,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  AuthGradientButton(
+                    onPressed: () {
+                      if (formkey.currentState!.validate()) {
+                        context.read<AuthBloc>().add(
+                              AuthSignUp(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                                name: nameController.text.trim(),
+                              ),
+                            );
+                      }
+                    },
+                    text: 'Sign Up',
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Already have an account?",
+                        style: Theme.of(context).textTheme.titleMedium,
+                        children: [
+                          TextSpan(
+                            text: ' Sign In',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
                                   color: AppPallete.gradient2,
                                   fontWeight: FontWeight.bold,
                                 ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
