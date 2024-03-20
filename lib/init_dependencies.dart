@@ -86,7 +86,9 @@ void _initBlog() {
   );
   //Repository
   serviceLocator.registerFactory<BlogRepository>(
-    () => BlogRepositoryImpl(serviceLocator()),
+    () => BlogRepositoryImpl(
+      serviceLocator(),
+    ),
   );
 
   //Use-Case
