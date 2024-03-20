@@ -7,6 +7,7 @@ import 'package:blog_app/core/utils/pick_image.dart';
 import 'package:blog_app/core/utils/snackbar.dart';
 import 'package:blog_app/features/blog/domain/entities/blog.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
+import 'package:blog_app/features/blog/presentation/pages/blog_page.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_editor.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -80,8 +81,14 @@ class _AddNewBlogPageState extends State<AddNewBlogPage> {
         listener: (context, state) {
           if (state is BlogFailure) {
             showSnackBar(context, state.error);
-          } else if (state is BlogSuccess) {
-            Navigator.of(context).pop();
+          } else if (state is BlogUploadSuccess) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const BlogPage(),
+              ),
+              (route) => false,
+            );
           }
         },
         builder: (context, state) {
